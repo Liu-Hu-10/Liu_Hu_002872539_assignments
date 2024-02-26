@@ -1,0 +1,164 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Department;
+
+import CourseCatalog.Course;
+import CourseCatalog.CourseCatalog;
+import CourseSchedule.CourseLoad;
+import CourseSchedule.CourseOffer;
+import CourseSchedule.CourseOfferDirectory;
+import CourseSchedule.CourseSchedule;
+import CourseSchedule.SeatAssignment;
+import Degree.Degree;
+import Employer.EmployerDirectory;
+import Persona.Faculty.FacultyDirectory;
+import Persona.PersonDirectory;
+import Persona.StudentDirectory;
+import Persona.StudentProfile;
+import Persona.Transcript;
+
+import java.util.HashMap;
+
+/**
+ *
+ * @author kal bugrara
+ */
+public class Department {
+
+    String name;
+    CourseCatalog coursecatalog;
+    PersonDirectory persondirectory;
+    StudentDirectory studentdirectory;
+    EmployerDirectory employerdirectory;
+    Degree degree;
+    FacultyDirectory facultydirectory;
+
+    HashMap<String, CourseSchedule> mastercoursecatalog; // very similar to ArrayList but with String used as indexes
+    CourseOfferDirectory courseOfferDirectory = new CourseOfferDirectory();
+
+    public Department(String n) {
+        name = n;
+        mastercoursecatalog = new HashMap<>();
+        coursecatalog = new CourseCatalog(this);
+        studentdirectory = new StudentDirectory(this); //pass the department object so it stays linked to it
+        persondirectory = new PersonDirectory();
+        degree = new Degree("MSIS");
+        facultydirectory = new FacultyDirectory(this);
+        degree = new Degree("MSIS");
+        
+    }
+    public void addCoreCourse(Course c){
+        degree.addCoreCourse(c);
+        
+    }
+public void addElectiveCourse(Course c){
+        degree.addElectiveCourse(c);
+        
+    }
+    public PersonDirectory getPersonDirectory() {
+
+        return persondirectory;
+
+    }
+
+    public Degree getDegree() {
+        return degree;
+    }
+
+    public StudentDirectory getStudentDirectory() {
+    return studentdirectory;
+    }
+
+    public FacultyDirectory getFacultyDirectory() {
+        return facultydirectory;
+    }
+
+    public CourseSchedule newCourseSchedule(String semester) {
+        CourseSchedule cs = new CourseSchedule(semester, coursecatalog);
+        mastercoursecatalog.put(semester, cs);
+        return cs;
+    }
+
+    public CourseSchedule getCourseSchedule(String semester) {
+
+        return mastercoursecatalog.get(semester);
+
+    }
+
+    public CourseOfferDirectory getCourseOfferDirectory() {
+        return courseOfferDirectory;
+    }
+
+
+    public CourseCatalog getCourseCatalog() {
+
+        return coursecatalog;
+
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public Course newCourse(String n, String nm, int cr) {
+
+        Course c = coursecatalog.newCourse(n, nm, cr);
+        return c;
+    }
+
+    public int calculateRevenuesBySemester(String semester) {
+
+        CourseSchedule css = mastercoursecatalog.get(semester);
+
+        return css.calculateTotalRevenues();
+
+    }
+
+    public void RegisterForAClass(String studentid, String cn, String semester) {
+
+        StudentProfile sp = studentdirectory.findStudent(studentid);
+
+        CourseLoad cl = sp.getCurrentCourseLoad();
+
+        CourseSchedule cs = mastercoursecatalog.get(semester);
+
+        CourseOffer co = cs.getCourseOfferByNumber(cn);
+
+        co.assignEmptySeat(cl);
+
+    }
+    
+    public void printCourseSchedule() {
+        System.out.println("Course Schedule for this semester:");
+        // for (Course course : courses) {
+        //     System.out.println("Course: " + course.getCourseName());
+        //     System.out.println("Teacher(s): " + course.getFacultyList());
+        //     System.out.println("Number of registered students: " + course.getNumberOfRegisteredStudents());
+        //     System.out.println("Remaining empty seats: " + course.getRemainingEmptySeats());
+        //     System.out.println();
+        // }
+        coursecatalog.printCourseCatalog();
+    }
+
+    public int calculateTuitionFeeForStudent(StudentProfile student, String semester) {
+        Transcript transcript = student.getTranscript();
+        CourseLoad courseLoad = transcript.getCourseLoadBySemester(semester);
+        int totalTuitionFee = 0;
+        if (courseLoad != null) {
+            for (SeatAssignment seatAssignment : courseLoad.getSeatAssignments()) {
+                Course course = seatAssignment.getAssociatedCourse();
+                totalTuitionFee += course.getCoursePrice();
+            }
+        }
+        return totalTuitionFee;
+    }
+
+
+        
+
+    }
+    
+
