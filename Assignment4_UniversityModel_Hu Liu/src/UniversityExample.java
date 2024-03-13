@@ -1,31 +1,28 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 import java.util.Scanner;
-import CourseCatalog.Course;
-import CourseCatalog.CourseCatalog;
-import CourseSchedule.CourseLoad;
-import CourseSchedule.CourseOffer;
-import CourseSchedule.CourseOfferDirectory;
-import CourseSchedule.CourseSchedule;
-import CourseSchedule.SeatAssignment;
-import Degree.Degree;
-import Department.Department;
-import Persona.Person;
-import Persona.PersonDirectory;
-import Persona.StudentDirectory;
-import Persona.StudentProfile;
-import Persona.Transcript;
-import Persona.Faculty.FacultyDirectory;
-import Persona.Faculty.FacultyProfile;
-import College.College;
-
+import University.CourseCatalog.Course;
+import University.CourseCatalog.CourseCatalog;
+import University.CourseSchedule.CourseLoad;
+import University.CourseSchedule.CourseOffer;
+import University.CourseSchedule.CourseOfferDirectory;
+import University.CourseSchedule.CourseSchedule;
+import University.CourseSchedule.SeatAssignment;
+import University.Degree.Degree;
+import University.Department.Department;
+import Business.Person.Person;
+import Business.Person.PersonDirectory;
+import Business.Profiles.StudentDirectory;
+import Business.Profiles.StudentProfile;
+import Business.Profiles.Transcript;
+import University.Faculty.FacultyDirectory;
+import University.Faculty.FacultyProfile;
+import University.College.College;
 /**
  *
- * @author Hu Liu
+ * @author HU
  */
 public class UniversityExample {
         
@@ -225,6 +222,8 @@ public class UniversityExample {
 
         Person messiPerson = pd.newPerson("0129", "messi");
         StudentProfile messi = sd.newStudentProfile(messiPerson);
+
+        
 
 
 
